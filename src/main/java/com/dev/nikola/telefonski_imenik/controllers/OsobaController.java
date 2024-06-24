@@ -64,7 +64,7 @@ public class OsobaController {
     }
 
     @PostMapping({"/", "/sort{pageNum}", "/page/{pageNum}"})
-    public String updateHomePage(@ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
+    public String searchHomePage(@ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
         this.osobaPretraga = osobaPretraga;
         this.path = "/";
         return paginatedHomePage(1, model);
