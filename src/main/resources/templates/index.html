@@ -24,7 +24,7 @@
 
     <hr>
 
-    <form action="#" th:action="@{/}" th:object="${osobaPretraga}" method="POST">
+    <form th:object="${osobaPretraga}" method="POST">
         <input type="text" th:field="*{oib}" placeholder="Pretraživanje po OIB-u" class="form-control mb-4 col-4">
         <input type="text" th:field="*{ime}" placeholder="Pretraživanje po imenu" class="form-control mb-4 col-4">
         <input type="text" th:field="*{prezime}" placeholder="Pretraživanje po prezimenu" class="form-control mb-4 col-4">
@@ -40,12 +40,12 @@
     <table border="1" class="table table-striped table-responsive-md">
         <thead>
         <tr>
-            <th>OIB</th>
-            <th>Ime</th>
-            <th>Prezime</th>
-            <th>Adresa</th>
-            <th>Grad</th>
-            <th>Telefonski broj</th>
+            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=oib&sortDir=' + ${reverseSortDir}}">OIB</a></th>
+            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=ime&sortDir=' + ${reverseSortDir}}">Ime</a></th>
+            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=prezime&sortDir=' + ${reverseSortDir}}">Prezime</a></th>
+            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=adresa&sortDir=' + ${reverseSortDir}}">Adresa</a></th>
+            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=grad&sortDir=' + ${reverseSortDir}}">Grad</a></th>
+            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=broj&sortDir=' + ${reverseSortDir}}">Telefonski broj</a></th>
             <th>Opcije</th>
         </tr>
         </thead>

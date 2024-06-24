@@ -5,6 +5,7 @@ import com.dev.nikola.telefonski_imenik.repositories.OsobaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -52,8 +53,11 @@ public class OsobaServiceImpl implements  OsobaService{
                                           String ime,
                                           String prezime,
                                           String grad,
-                                          String broj) {
-        Pageable pageable = PageRequest.of(pageNum - 1, pageSize);
+                                          String broj,
+                                          String sortField,
+                                          String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
         return this.osobaRepository.findPaginatedByParams(oib, ime, prezime, grad, broj, pageable);
     }
 

@@ -19,6 +19,8 @@ public class OsobaController {
 
     private OsobaPretraga osobaPretraga;
     private String path;
+    private String sortField;
+    private String sortDir;
 
     public OsobaController(OsobaService osobaService) {
         this.osobaService = osobaService;
@@ -34,7 +36,9 @@ public class OsobaController {
                                                                 this.osobaPretraga.getIme(),
                                                                 this.osobaPretraga.getPrezime(),
                                                                 this.osobaPretraga.getGrad(),
-                                                                this.osobaPretraga.getBroj());
+                                                                this.osobaPretraga.getBroj(),
+                                                                this.sortField,
+                                                                this.sortDir);
 
         List<Osoba> listOsobe = page.getContent();
 
@@ -42,21 +46,38 @@ public class OsobaController {
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
+
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+
         model.addAttribute("listOsobe", listOsobe);
         return "index";
     }
 
     @GetMapping("/")
     public String startHomePage(Model model) {
+        this.sortField = "prezime";
+        this.sortDir = "asc";
         this.path = "/";
         return paginatedHomePage(1, model);
     }
 
-    @PostMapping("/")
+    @PostMapping({"/", "/sort{pageNum}", "/page/{pageNum}"})
     public String updateHomePage(@ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
         this.osobaPretraga = osobaPretraga;
         this.path = "/";
         return paginatedHomePage(1, model);
+    }
+
+    @GetMapping("/sort{pageNum}")
+    public String sortHomePage(@PathVariable(value = "pageNum") int pageNum,
+                               @RequestParam("sortField") String sortField,
+                               @RequestParam("sortDir") String sortDir,
+                               Model model) {
+        this.sortField = sortField;
+        this.sortDir = sortDir;
+        return paginatedHomePage(pageNum, model);
     }
 
     @GetMapping("/page/{pageNum}")
