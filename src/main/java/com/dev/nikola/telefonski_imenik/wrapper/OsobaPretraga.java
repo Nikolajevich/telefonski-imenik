@@ -1,4 +1,4 @@
-package com.dev.nikola.telefonski_imenik.searchClasses;
+package com.dev.nikola.telefonski_imenik.wrapper;
 
 public class OsobaPretraga {
 

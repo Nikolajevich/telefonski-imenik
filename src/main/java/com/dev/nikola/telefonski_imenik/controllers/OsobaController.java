@@ -1,7 +1,7 @@
 package com.dev.nikola.telefonski_imenik.controllers;
 
 import com.dev.nikola.telefonski_imenik.models.Osoba;
-import com.dev.nikola.telefonski_imenik.searchClasses.OsobaPretraga;
+import com.dev.nikola.telefonski_imenik.wrapper.OsobaPretraga;
 import com.dev.nikola.telefonski_imenik.services.OsobaService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
