@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Telefonski imenik</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container my-2">
+    <h1>Telefonski imenik</h1>
+
+    <hr>
+    <h2>Unesite podatke</h2>
+
+    <form action="#" th:action="@{/novaOsobaForm}" th:object="${osoba}" method="POST">
+        <input type="hidden" th:field="*{id}" />
+
+        <input type="text" th:field="*{oib}" placeholder="OIB" class="form-control mb-4 col-4">
+        <ul>
+            <li th:each="err : ${#fields.errors('oib')}" th:text="${err}"
+                class="error"></li>
+        </ul>
+
+        <input type="text" th:field="*{ime}" placeholder="Ime" class="form-control mb-4 col-4">
+        <p th:if="${#fields.hasErrors('ime')}"
+           th:class="${#fields.hasErrors('ime')}? error"
+           th:errors="*{ime}"></p>
+
+        <input type="text" th:field="*{prezime}" placeholder="Prezime" class="form-control mb-4 col-4">
+        <p th:if="${#fields.hasErrors('prezime')}"
+           th:class="${#fields.hasErrors('prezime')}? error"
+           th:errors="*{prezime}"></p>
+
+        <input type="text" th:field="*{adresa}" placeholder="Adresa" class="form-control mb-4 col-4">
+        <p th:if="${#fields.hasErrors('adresa')}"
+           th:class="${#fields.hasErrors('adresa')}? error"
+           th:errors="*{adresa}"></p>
+
+        <input type="text" th:field="*{grad}" placeholder="Grad" class="form-control mb-4 col-4">
+        <p th:if="${#fields.hasErrors('grad')}"
+           th:class="${#fields.hasErrors('grad')}? error"
+           th:errors="*{grad}"></p>
+
+        <input type="text" th:field="*{broj}" placeholder="Telefonski broj" class="form-control mb-4 col-4">
+        <p th:if="${#fields.hasErrors('broj')}"
+           th:class="${#fields.hasErrors('broj')}? error"
+           th:errors="*{broj}"></p>
+
+        <button type="submit" class="btn btn-info col-2"> Spremi</button>
+    </form>
+
+    <hr>
+
+    <a class="btn btn-primary btn-sm mb-3" th:href="@{/}"> Nazad na početnu stranicu</a>
+</div>
+</body>
+</html>

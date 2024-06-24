@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Telefonski imenik</title>
+
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          rel="stylesheet">
+
+    <style>
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container my-2">
+    <h1>Telefonski imenik</h1>
+
+    <hr>
+
+    <form action="#" th:action="@{/}" th:object="${osobaPretraga}" method="POST">
+        <input type="text" th:field="*{oib}" placeholder="Pretraživanje po OIB-u" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{ime}" placeholder="Pretraživanje po imenu" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{prezime}" placeholder="Pretraživanje po prezimenu" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{grad}" placeholder="Pretraživanje po gradu" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{broj}" placeholder="Pretraživanje po telefonskom broju" class="form-control mb-4 col-4">
+        <button type="submit" class="btn btn-primary btn-sm mb-3"> Pretraži</button>
+    </form>
+
+    <hr>
+
+    <a class="btn btn-success btn-sm mb-3" th:href="@{/novaOsobaForm}"> Dodaj novu osobu </a>
+
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>OIB</th>
+            <th>Ime</th>
+            <th>Prezime</th>
+            <th>Adresa</th>
+            <th>Grad</th>
+            <th>Telefonski broj</th>
+            <th>Opcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="osoba : ${listOsobe}">
+            <td th:text="${osoba.oib}"></td>
+            <td th:text="${osoba.ime}"></td>
+            <td th:text="${osoba.prezime}"></td>
+            <td th:text="${osoba.adresa}"></td>
+            <td th:text="${osoba.grad}"></td>
+            <td th:text="${osoba.broj}"></td>
+            <td> <a th:href="@{/updateOsobaForm/{id}(id=${osoba.id})}" class="btn btn-primary">Ažuriraj</a>
+                <a th:href="@{/deleteOsoba/{id}(id=${osoba.id})}" class="btn btn-danger">Izbriši</a> </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${totalPages > 1}">
+        <div class="pagination">
+            <div class="col-sm-2">
+                Ukupno osoba: [[${totalItems}]]
+            </div>
+
+            <div class="pagination">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                    <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                    <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                </span>
+            </div>
+
+            <div class="col-sm-1">
+                <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">Nazad</a>
+                <span th:unless="${currentPage > 1}">Nazad</span>
+            </div>
+
+            <div class="col-sm-1">
+                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Dalje</a>
+                <span th:unless="${currentPage < totalPages}">Dalje</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
