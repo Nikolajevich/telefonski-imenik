@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface OsobaRepository extends JpaRepository<Osoba, Long> {
 
-    @Query("SELECT o FROM Osoba o WHERE (:oib IS NULL OR :oib = '' OR o.oib = :oib)" +
+    @Query(value = "SELECT o FROM Osoba o WHERE (:oib IS NULL OR :oib = '' OR o.oib = :oib)" +
             "                       AND (:ime IS NULL OR :ime = '' OR o.ime = :ime)" +
             "                       AND (:prezime IS NULL OR :prezime = '' OR o.prezime = :prezime)" +
             "                       AND (:grad IS NULL OR :grad = '' OR o.grad = :grad)" +

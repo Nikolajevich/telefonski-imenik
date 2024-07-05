@@ -18,12 +18,17 @@
 </head>
 <body>
 <div class="container my-2">
+
+    <div th:if="${actionSuccess}" class="alert alert-success" role="alert">
+        Uspješno ste spremili/ažurirali osobu
+    </div>
+
     <h1>Telefonski imenik</h1>
 
     <hr>
     <h2>Unesite podatke</h2>
 
-    <form action="#" th:action="@{/novaOsobaForm}" th:object="${osoba}" method="POST">
+    <form th:object="${osoba}" method="POST">
         <input type="hidden" th:field="*{id}" />
 
         <input type="text" th:field="*{oib}" placeholder="OIB" class="form-control mb-4 col-4">

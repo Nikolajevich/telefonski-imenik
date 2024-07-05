@@ -43,6 +43,7 @@ public class OsobaController {
         List<Osoba> listOsobe = page.getContent();
 
         model.addAttribute("osobaPretraga", this.osobaPretraga);
+
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
@@ -93,24 +94,27 @@ public class OsobaController {
         return "osoba_podaci";
     }
 
-    @PostMapping("/novaOsobaForm")
-    public String saveOsoba(@Valid Osoba osoba, BindingResult result) {
+    @PostMapping({"/novaOsobaForm", "/updateOsobaForm/{id}"})
+    public String saveOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "osoba_podaci";
         }
+
         this.osobaService.saveOsoba(osoba);
-        return "redirect:/";
+        model.addAttribute("actionSuccess", true);
+
+        return "osoba_podaci";
     }
 
     @GetMapping("/updateOsobaForm/{id}")
-    public String updateOsobaForm(@PathVariable( value = "id") Long id, Model model) {
+    public String updateOsobaForm(@PathVariable(value = "id") Long id, Model model) {
         Osoba osoba = this.osobaService.getOsobaById(id);
         model.addAttribute("osoba", osoba);
         return "osoba_podaci";
     }
 
     @GetMapping("/deleteOsoba/{id}")
-    public String deleteOsoba(@PathVariable( value = "id") Long id) {
+    public String deleteOsoba(@PathVariable(value = "id") Long id) {
         this.osobaService.deleteOsobaById(id);
         return "redirect:" + this.path;
     }
