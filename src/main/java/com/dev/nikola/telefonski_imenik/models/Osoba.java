@@ -3,7 +3,6 @@ package com.dev.nikola.telefonski_imenik.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "osobe")
@@ -11,7 +10,7 @@ public class Osoba {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Column(name = "OIB")
     @NotEmpty(message = "Polje ne smije biti prazno")
@@ -47,11 +46,11 @@ public class Osoba {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getIme() {

@@ -25,6 +25,8 @@ public class OsobaController {
     public OsobaController(OsobaService osobaService) {
         this.osobaService = osobaService;
         this.osobaPretraga = new OsobaPretraga();
+        this.sortField = "prezime";
+        this.sortDir = "asc";
     }
 
     public String paginatedHomePage(int pageNum, Model model) {
@@ -58,8 +60,6 @@ public class OsobaController {
 
     @GetMapping("/")
     public String startHomePage(Model model) {
-        this.sortField = "prezime";
-        this.sortDir = "asc";
         this.path = "/";
         return paginatedHomePage(1, model);
     }
@@ -89,20 +89,31 @@ public class OsobaController {
 
     @GetMapping("/novaOsobaForm")
     public String novaOsobaForm(Model model) {
-        Osoba osoba = new Osoba();
-        model.addAttribute("osoba", osoba);
+        model.addAttribute("osoba", new Osoba());
         return "osoba_podaci";
     }
 
-    @PostMapping({"/novaOsobaForm", "/updateOsobaForm/{id}"})
+    @PostMapping("/novaOsobaForm")
     public String saveOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "osoba_podaci";
         }
 
         this.osobaService.saveOsoba(osoba);
-        model.addAttribute("actionSuccess", true);
+        model.addAttribute("saveSuccess", true);
+        model.addAttribute("osoba", new Osoba());
+        return "osoba_podaci";
+    }
 
+    @PostMapping("/updateOsobaForm/{id}")
+    public String updateOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            return "osoba_podaci";
+        }
+
+        this.osobaService.saveOsoba(osoba);
+        model.addAttribute("updateSuccess", true);
         return "osoba_podaci";
     }
 
