@@ -37,7 +37,7 @@ public class OsobaController {
         return "asc";
     }
 
-    @ModelAttribute("sortField")
+    @ModelAttribute("path")
     public String initPath() {
         return "/";
     }
@@ -90,15 +90,13 @@ public class OsobaController {
                                @RequestParam("sortDir") String sortDir,
                                @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
                                Model model) {
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
         return paginatedHomePage(osobaPretraga, sortField, sortDir, pageNum, model);
     }
 
     @GetMapping("/page/{pageNum}")
     public String startPaginatedHomePage(@PathVariable(value = "pageNum") int pageNum,
-                                         @RequestParam("sortField") String sortField,
-                                         @RequestParam("sortDir") String sortDir,
+                                         @ModelAttribute("sortField") String sortField,
+                                         @ModelAttribute("sortDir") String sortDir,
                                          @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
                                          Model model) {
         model.addAttribute("path", "/page/" + pageNum);
