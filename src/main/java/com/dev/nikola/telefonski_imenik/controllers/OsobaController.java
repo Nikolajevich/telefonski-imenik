@@ -1,8 +1,8 @@
 package com.dev.nikola.telefonski_imenik.controllers;
 
 import com.dev.nikola.telefonski_imenik.models.Osoba;
-import com.dev.nikola.telefonski_imenik.wrapper.OsobaPretraga;
 import com.dev.nikola.telefonski_imenik.services.OsobaService;
+import com.dev.nikola.telefonski_imenik.wrapper.OsobaPretraga;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -13,38 +13,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@SessionAttributes("osobaPretraga")
+@SessionAttributes({"osobaPretraga", "sortField", "sortDir", "path"})
 public class OsobaController {
 
     private final OsobaService osobaService;
 
-    private String path;
-    private String sortField;
-    private String sortDir;
-
     public OsobaController(OsobaService osobaService) {
         this.osobaService = osobaService;
-        this.sortField = "prezime";
-        this.sortDir = "asc";
     }
 
     @ModelAttribute("osobaPretraga")
-    public OsobaPretraga historyOsoba() {
+    public OsobaPretraga initOsobaPretraga() {
         return new OsobaPretraga();
     }
 
-    public String paginatedHomePage(OsobaPretraga osobaPretraga, int pageNum, Model model) {
+    @ModelAttribute("sortField")
+    public String initSortField() {
+        return "prezime";
+    }
+
+    @ModelAttribute("sortDir")
+    public String initSortDir() {
+        return "asc";
+    }
+
+    @ModelAttribute("sortField")
+    public String initPath() {
+        return "/";
+    }
+
+    public String paginatedHomePage(OsobaPretraga osobaPretraga,
+                                    String sortField,
+                                    String sortDir,
+                                    int pageNum,
+                                    Model model) {
         int pageSize = 4;
 
-        Page<Osoba> page = this.osobaService.getPaginatedParams(pageNum,
-                                                                pageSize,
-                                                                osobaPretraga.getOib(),
-                                                                osobaPretraga.getIme(),
-                                                                osobaPretraga.getPrezime(),
-                                                                osobaPretraga.getGrad(),
-                                                                osobaPretraga.getBroj(),
-                                                                sortField,
-                                                                sortDir);
+        Page<Osoba> page = osobaService.getPaginatedParams(pageNum,
+                pageSize,
+                osobaPretraga.getOib(),
+                osobaPretraga.getIme(),
+                osobaPretraga.getPrezime(),
+                osobaPretraga.getGrad(),
+                osobaPretraga.getBroj(),
+                sortField,
+                sortDir);
 
         List<Osoba> listOsobe = page.getContent();
 
@@ -62,16 +75,13 @@ public class OsobaController {
         return "index";
     }
 
-    @GetMapping("/")
-    public String startHomePage( @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
-        this.path = "/";
-        return paginatedHomePage( osobaPretraga,1, model);
-    }
-
-    @PostMapping({"/", "/sort{pageNum}", "/page/{pageNum}"})
-    public String searchHomePage(@ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
-        this.path = "/";
-        return paginatedHomePage(osobaPretraga, 1, model);
+    @RequestMapping({"/", "/sort{pageNum}", "/page/{pageNum}"})
+    public String setupHomePage(@ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
+                                @ModelAttribute("sortField") String sortField,
+                                @ModelAttribute("sortDir") String sortDir,
+                                Model model) {
+        model.addAttribute("path", "/");
+        return paginatedHomePage(osobaPretraga, sortField, sortDir, 1, model);
     }
 
     @GetMapping("/sort{pageNum}")
@@ -80,15 +90,19 @@ public class OsobaController {
                                @RequestParam("sortDir") String sortDir,
                                @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
                                Model model) {
-        this.sortField = sortField;
-        this.sortDir = sortDir;
-        return paginatedHomePage(osobaPretraga, pageNum, model);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        return paginatedHomePage(osobaPretraga, sortField, sortDir, pageNum, model);
     }
 
     @GetMapping("/page/{pageNum}")
-    public String startPaginatedHomePage(@PathVariable(value = "pageNum") int pageNum, Model model, @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga) {
-        this.path = "/page/" + pageNum;
-        return paginatedHomePage(osobaPretraga, pageNum, model);
+    public String startPaginatedHomePage(@PathVariable(value = "pageNum") int pageNum,
+                                         @RequestParam("sortField") String sortField,
+                                         @RequestParam("sortDir") String sortDir,
+                                         @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
+                                         Model model) {
+        model.addAttribute("path", "/page/" + pageNum);
+        return paginatedHomePage(osobaPretraga, sortField, sortDir, pageNum, model);
     }
 
     @GetMapping("/novaOsobaForm")
@@ -103,7 +117,7 @@ public class OsobaController {
             return "osoba_podaci";
         }
 
-        this.osobaService.saveOsoba(osoba);
+        osobaService.saveOsoba(osoba);
         model.addAttribute("saveSuccess", true);
         model.addAttribute("osoba", new Osoba());
         return "osoba_podaci";
@@ -129,9 +143,10 @@ public class OsobaController {
     }
 
     @GetMapping("/deleteOsoba/{id}")
-    public String deleteOsoba(@PathVariable(value = "id") Long id) {
+    public String deleteOsoba(@PathVariable(value = "id") Long id,
+                              @ModelAttribute("path") String path) {
         osobaService.deleteOsobaById(id);
-        return "redirect:" + this.path;
+        return "redirect:" + path;
     }
 
 }
