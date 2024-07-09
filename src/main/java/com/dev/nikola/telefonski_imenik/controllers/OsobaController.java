@@ -61,8 +61,6 @@ public class OsobaController {
 
         List<Osoba> listOsobe = page.getContent();
 
-        model.addAttribute("osobaPretraga", osobaPretraga);
-
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
