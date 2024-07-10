@@ -12,6 +12,18 @@ public class OsobaPretraga {
 
     private String broj;
 
+    private String sortField;
+
+    private String sortDir;
+
+    private String path;
+
+    public OsobaPretraga() {
+        sortField = "prezime";
+        sortDir = "asc";
+        path = "/";
+    }
+
     public String getOib() {
         return oib;
     }
@@ -50,5 +62,29 @@ public class OsobaPretraga {
 
     public void setBroj(String broj) {
         this.broj = broj;
+    }
+
+    public String getSortDir() {
+        return sortDir;
+    }
+
+    public void setSortDir(String sortDir) {
+        this.sortDir = sortDir;
+    }
+
+    public String getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
