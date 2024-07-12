@@ -2,11 +2,12 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
+
     <title>Telefonski imenik</title>
 
     <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
           crossorigin="anonymous">
 
     <style>
@@ -14,11 +15,9 @@
             color: red;
         }
     </style>
-
 </head>
 <body>
 <div class="container my-2">
-
     <div th:if="${saveSuccess}" class="alert alert-success" role="alert">
         Uspješno ste spremili osobu
     </div>
@@ -27,10 +26,13 @@
         Uspješno ste ažurirali osobu
     </div>
 
-    <h1>Telefonski imenik</h1>
+    <h2>Telefonski imenik</h2>
 
     <hr>
-    <h2>Unesite podatke</h2>
+
+    <div style="margin-bottom: 20px">
+        <h5>Unesite podatke:</h5>
+    </div>
 
     <form th:object="${osoba}" method="POST">
         <input type="hidden" th:field="*{id}" />
@@ -71,7 +73,7 @@
 
     <hr>
 
-    <a class="btn btn-primary btn-sm mb-3" th:href="@{${osobaPretraga.path}}"> Nazad na početnu stranicu</a>
+    <a class="btn btn-primary mb-3" th:href="@{${osobaPretraga.path}}"> Nazad na početnu stranicu</a>
 </div>
 </body>
 </html>
