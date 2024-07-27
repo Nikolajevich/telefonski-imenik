@@ -21,6 +21,7 @@ public class Adresa {
     private String grad;
 
     @ManyToOne
+    @JoinColumn(name = "osoba_id")
     private Osoba osoba;
 
     public String getUlicniBroj() {

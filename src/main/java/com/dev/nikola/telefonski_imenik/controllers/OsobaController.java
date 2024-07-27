@@ -1,6 +1,7 @@
 package com.dev.nikola.telefonski_imenik.controllers;
 
 import com.dev.nikola.telefonski_imenik.models.Osoba;
+import com.dev.nikola.telefonski_imenik.services.AdresaService;
 import com.dev.nikola.telefonski_imenik.services.OsobaService;
 import com.dev.nikola.telefonski_imenik.wrapper.OsobaPretraga;
 import jakarta.validation.Valid;
@@ -17,9 +18,11 @@ import java.util.List;
 public class OsobaController {
 
     private final OsobaService osobaService;
+    private final AdresaService adresaService;
 
-    public OsobaController(OsobaService osobaService) {
+    public OsobaController(OsobaService osobaService, AdresaService adresaService) {
         this.osobaService = osobaService;
+        this.adresaService = adresaService;
     }
 
     @ModelAttribute("osobaPretraga")
