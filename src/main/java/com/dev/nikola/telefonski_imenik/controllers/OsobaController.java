@@ -2,7 +2,6 @@ package com.dev.nikola.telefonski_imenik.controllers;
 
 import com.dev.nikola.telefonski_imenik.models.Adresa;
 import com.dev.nikola.telefonski_imenik.models.Osoba;
-import com.dev.nikola.telefonski_imenik.services.AdresaService;
 import com.dev.nikola.telefonski_imenik.services.OsobaService;
 import com.dev.nikola.telefonski_imenik.wrapper.OsobaAdresaForm;
 import com.dev.nikola.telefonski_imenik.wrapper.OsobaPretraga;
@@ -21,11 +20,9 @@ import java.util.List;
 public class OsobaController {
 
     private final OsobaService osobaService;
-    private final AdresaService adresaService;
 
-    public OsobaController(OsobaService osobaService, AdresaService adresaService) {
+    public OsobaController(OsobaService osobaService) {
         this.osobaService = osobaService;
-        this.adresaService = adresaService;
     }
 
     @ModelAttribute("osobaPretraga")
@@ -33,7 +30,7 @@ public class OsobaController {
         return new OsobaPretraga();
     }
 
-    public String paginatedHomePage(OsobaPretraga osobaPretraga, int pageNum, Model model) {
+    public String homePage(OsobaPretraga osobaPretraga, int pageNum, Model model) {
         int pageSize = 4;
 
         Page<Osoba> page = osobaService.getPaginatedParams(pageNum,
@@ -63,7 +60,7 @@ public class OsobaController {
     @RequestMapping({"/", "/sort{pageNum}", "/page/{pageNum}"})
     public String setupHomePage(@ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
         osobaPretraga.setPath("/");
-        return paginatedHomePage(osobaPretraga, 1, model);
+        return homePage(osobaPretraga, 1, model);
     }
 
     @GetMapping("/sort{pageNum}")
@@ -74,15 +71,15 @@ public class OsobaController {
                                Model model) {
         osobaPretraga.setSortField(sortField);
         osobaPretraga.setSortDir(sortDir);
-        return paginatedHomePage(osobaPretraga, pageNum, model);
+        return homePage(osobaPretraga, pageNum, model);
     }
 
     @GetMapping("/page/{pageNum}")
-    public String startPaginatedHomePage(@PathVariable(value = "pageNum") int pageNum,
+    public String paginateHomePage(@PathVariable(value = "pageNum") int pageNum,
                                          @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
                                          Model model) {
         osobaPretraga.setPath("/page/" + pageNum);
-        return paginatedHomePage(osobaPretraga, pageNum, model);
+        return homePage(osobaPretraga, pageNum, model);
     }
 
     @GetMapping("/novaOsobaForm")
@@ -115,11 +112,16 @@ public class OsobaController {
     }
 
     @PostMapping("/updateOsobaForm/{id}")
-    public String updateOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
+    public String updateOsoba(@Valid Osoba formOsoba, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "update_osoba_form";
         }
 
+        Osoba osoba = osobaService.getOsobaById(formOsoba.getId());
+        osoba.setIme(formOsoba.getIme());
+        osoba.setPrezime(formOsoba.getPrezime());
+        osoba.setBroj(formOsoba.getBroj());
+        osoba.setOib(formOsoba.getOib());
         osobaService.saveOsoba(osoba);
         model.addAttribute("updateSuccess", true);
         return "update_osoba_form";
@@ -127,8 +129,7 @@ public class OsobaController {
 
     @GetMapping("/updateOsobaForm/{id}")
     public String updateOsobaForm(@PathVariable(value = "id") Long id, Model model) {
-        Osoba osoba = osobaService.getOsobaById(id);
-        model.addAttribute("osoba", osoba);
+        model.addAttribute("osoba", osobaService.getOsobaById(id));
         return "update_osoba_form";
     }
 
@@ -140,7 +141,7 @@ public class OsobaController {
     }
 
     @GetMapping("/osobaDetails/{id}")
-    public String osobaDetails(@SessionAttribute OsobaPretraga osobaPretraga, @PathVariable(value = "id") Long id, Model model) {
+    public String osobaDetails(@SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga, @PathVariable(value = "id") Long id, Model model) {
         osobaPretraga.setId(id);
         model.addAttribute("osobaPretraga", osobaPretraga);
         return "redirect:/osobaDetails";

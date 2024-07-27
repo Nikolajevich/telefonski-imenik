@@ -26,7 +26,7 @@
     <hr>
 
     <div style="margin-bottom: 20px">
-        <h5>Detalji osobe:</h5>
+        <h4>Detalji osobe:</h4>
     </div>
 
     <div>
@@ -68,7 +68,8 @@
             <td th:text="${adresa.ulicniBroj}"></td>
             <td th:text="${adresa.grad}"></td>
             <td><a th:href="@{/updateAdresaForm/{id}(id=${adresa.id})}" class="btn btn-primary btn-sm">Ažuriraj</a>
-                <a th:href="@{/deleteAdresa/{id}(id=${adresa.id})}" class="btn btn-danger btn-sm">Izbriši</a>
+                <a th:if="${listAdrese.size()*totalPages > 1}" th:href="@{/deleteAdresa/{id}(id=${adresa.id})}"
+                   class="btn btn-danger btn-sm">Izbriši</a>
             </td>
         </tr>
         </tbody>
@@ -82,18 +83,18 @@
 
             <div class="pagination">
                 <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                    <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                    <a th:if="${currentPage != i}" th:href="@{'/osobaDetails/page/' + ${i}}">[[${i}]]</a>
                     <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
                 </span>
             </div>
 
             <div class="col-sm-1">
-                <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">Nazad</a>
+                <a th:if="${currentPage > 1}" th:href="@{'/osobaDetails/page/' + ${currentPage - 1}}">Nazad</a>
                 <span th:unless="${currentPage > 1}">Nazad</span>
             </div>
 
             <div class="col-sm-1">
-                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Dalje</a>
+                <a th:if="${currentPage < totalPages}" th:href="@{'/osobaDetails/page/' + ${currentPage + 1}}">Dalje</a>
                 <span th:unless="${currentPage < totalPages}">Dalje</span>
             </div>
         </div>
