@@ -1,8 +1,10 @@
 package com.dev.nikola.telefonski_imenik.controllers;
 
+import com.dev.nikola.telefonski_imenik.models.Adresa;
 import com.dev.nikola.telefonski_imenik.models.Osoba;
 import com.dev.nikola.telefonski_imenik.services.AdresaService;
 import com.dev.nikola.telefonski_imenik.services.OsobaService;
+import com.dev.nikola.telefonski_imenik.wrapper.OsobaAdresaForm;
 import com.dev.nikola.telefonski_imenik.wrapper.OsobaPretraga;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -84,25 +87,34 @@ public class OsobaController {
 
     @GetMapping("/novaOsobaForm")
     public String novaOsobaForm(Model model) {
-        model.addAttribute("osoba", new Osoba());
+        Osoba newOsoba = new Osoba();
+        Adresa newAdresa = new Adresa();
+        OsobaAdresaForm osobaAdresaForm = new OsobaAdresaForm();
+        osobaAdresaForm.addAdresa(newAdresa);
+        osobaAdresaForm.setOsoba(newOsoba);
+        model.addAttribute("osobaAdresaForm", osobaAdresaForm);
         return "osoba_form";
     }
 
     @PostMapping("/novaOsobaForm")
-    public String saveOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
+    public String saveOsoba(@ModelAttribute("osobaAdresaForm") OsobaAdresaForm osobaAdresaForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "osoba_form";
         }
-
+        Osoba osoba = osobaAdresaForm.getOsoba();
+        osoba.setAdresaSet(new HashSet<>(osobaAdresaForm.getAdresaList()));
         osobaService.saveOsoba(osoba);
-        model.addAttribute("saveSuccess", true);
-        model.addAttribute("osoba", new Osoba());
+        Osoba newOsoba = new Osoba();
+        Adresa newAdresa = new Adresa();
+        osobaAdresaForm = new OsobaAdresaForm();
+        osobaAdresaForm.addAdresa(newAdresa);
+        osobaAdresaForm.setOsoba(newOsoba);
+        model.addAttribute("osobaAdresaForm", osobaAdresaForm);
         return "osoba_form";
     }
 
     @PostMapping("/updateOsobaForm/{id}")
     public String updateOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
-
         if (result.hasErrors()) {
             return "osoba_form";
         }

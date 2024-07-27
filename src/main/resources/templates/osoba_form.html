@@ -5,10 +5,10 @@
 
     <title>Telefonski imenik</title>
 
-    <link rel="stylesheet"
+    <link crossorigin="anonymous"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
           integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
-          crossorigin="anonymous">
+          rel="stylesheet">
 
     <style>
         .error {
@@ -18,47 +18,55 @@
 </head>
 <body>
 <div class="container my-2">
-    <div th:if="${saveSuccess}" class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert" th:if="${saveSuccess}">
         Uspješno ste spremili osobu
     </div>
 
-    <div th:if="${updateSuccess}" class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert" th:if="${updateSuccess}">
         Uspješno ste ažurirali osobu
     </div>
 
     <h2>Telefonski imenik</h2>
 
     <hr>
+    <br/>
 
-    <div style="margin-bottom: 20px">
-        <h5>Unesite podatke:</h5>
-    </div>
+    <form method="POST" th:object="${osobaAdresaForm}">
+        <div style="margin-bottom: 20px">
+            <h5>Unesite osnovne podatke:</h5>
+        </div>
 
-    <form th:object="${osoba}" method="POST">
-        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <input th:field="*{osoba.id}" type="hidden">
 
-        <input type="text" th:field="*{prezime}" placeholder="Prezime" class="form-control mb-4 col-4">
-        <p th:if="${#fields.hasErrors('prezime')}"
-           th:class="${#fields.hasErrors('prezime')}? error"
-           th:errors="*{prezime}"></p>
+            <input class="form-control mb-4 col-4" placeholder="Prezime" th:field="*{osoba.prezime}" type="text">
 
-        <input type="text" th:field="*{ime}" placeholder="Ime" class="form-control mb-4 col-4">
-        <p th:if="${#fields.hasErrors('ime')}"
-           th:class="${#fields.hasErrors('ime')}? error"
-           th:errors="*{ime}"></p>
+            <input class="form-control mb-4 col-4" placeholder="Ime" th:field="*{osoba.ime}" type="text">
 
-        <input type="text" th:field="*{broj}" placeholder="Telefonski broj" class="form-control mb-4 col-4">
-        <p th:if="${#fields.hasErrors('broj')}"
-           th:class="${#fields.hasErrors('broj')}? error"
-           th:errors="*{broj}"></p>
+            <input class="form-control mb-4 col-4" placeholder="Telefonski broj" th:field="*{osoba.broj}" type="text">
 
-        <input type="text" th:field="*{oib}" placeholder="OIB" class="form-control mb-4 col-4">
-        <ul>
-            <li th:each="err : ${#fields.errors('oib')}" th:text="${err}"
-                class="error"></li>
-        </ul>
+            <input class="form-control mb-4 col-4" placeholder="OIB" th:field="*{osoba.oib}" type="text">
+        </div>
 
-        <button type="submit" class="btn btn-info col-2"> Spremi</button>
+        <br/>
+
+        <div style="margin-bottom: 20px">
+            <h5>Unesite adresu:</h5>
+        </div>
+
+        <div>
+            <input th:field="*{adresaList[0].id}" type="hidden">
+
+            <input class="form-control mb-4 col-4" placeholder="Grad" th:field="*{adresaList[0].grad}"
+                   type="text">
+            <input class="form-control mb-4 col-4" placeholder="Ulica" th:field="*{adresaList[0].ulica}"
+                   type="text">
+            <input class="form-control mb-4 col-4" placeholder="Broj" th:field="*{adresaList[0].ulicniBroj}"
+                   type="text">
+            <br/>
+        </div>
+
+        <button class="btn btn-info col-2" type="submit"> Spremi</button>
     </form>
 
     <hr>
