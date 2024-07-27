@@ -50,10 +50,6 @@
                    class="text-white">Prezime</a></th>
             <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=ime&sortDir=' + ${reverseSortDir}}"
                    class="text-white">Ime</a></th>
-            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=adresa&sortDir=' + ${reverseSortDir}}"
-                   class="text-white">Adresa</a></th>
-            <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=grad&sortDir=' + ${reverseSortDir}}"
-                   class="text-white">Grad</a></th>
             <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=broj&sortDir=' + ${reverseSortDir}}"
                    class="text-white">Telefonski broj</a></th>
             <th><a th:href="@{'/sort' + ${currentPage} + '?sortField=oib&sortDir=' + ${reverseSortDir}}"
@@ -65,12 +61,9 @@
         <tr th:each="osoba : ${listOsobe}">
             <td th:text="${osoba.prezime}"></td>
             <td th:text="${osoba.ime}"></td>
-            <td th:text="${osoba.adresa}"></td>
-            <td th:text="${osoba.grad}"></td>
             <td th:text="${osoba.broj}"></td>
             <td th:text="${osoba.oib}"></td>
-            <td><a th:href="@{/updateOsobaForm/{id}(id=${osoba.id})}" class="btn btn-primary btn-sm">Ažuriraj</a>
-                <a th:href="@{/deleteOsoba/{id}(id=${osoba.id})}" class="btn btn-danger btn-sm">Izbriši</a></td>
+            <td><a th:href="@{/osobaDetails/{id}(id=${osoba.id})}" class="btn btn-primary btn-sm">Detalji</a></td>
         </tr>
         </tbody>
     </table>

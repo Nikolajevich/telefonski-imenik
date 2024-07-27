@@ -2,15 +2,17 @@ package com.dev.nikola.telefonski_imenik.wrapper;
 
 public class OsobaPretraga {
 
+    private Long id;
+
     private String oib;
 
     private String ime;
 
     private String prezime;
 
-    private String grad;
-
     private String broj;
+
+    private String grad;
 
     private String sortField;
 
@@ -22,6 +24,14 @@ public class OsobaPretraga {
         sortField = "prezime";
         sortDir = "asc";
         path = "/";
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getOib() {
@@ -48,20 +58,20 @@ public class OsobaPretraga {
         this.prezime = prezime;
     }
 
-    public String getGrad() {
-        return grad;
-    }
-
-    public void setGrad(String grad) {
-        this.grad = grad;
-    }
-
     public String getBroj() {
         return broj;
     }
 
     public void setBroj(String broj) {
         this.broj = broj;
+    }
+
+    public String getGrad() {
+        return grad;
+    }
+
+    public void setGrad(String grad) {
+        this.grad = grad;
     }
 
     public String getSortDir() {

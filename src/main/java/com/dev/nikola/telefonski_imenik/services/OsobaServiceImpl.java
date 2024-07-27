@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,13 +23,13 @@ public class OsobaServiceImpl implements  OsobaService{
     @Override
     @Transactional
     public void saveOsoba(Osoba osoba) {
-        this.osobaRepository.save(osoba);
+        osobaRepository.save(osoba);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Osoba getOsobaById(Long id) {
-        Optional<Osoba> optional = this.osobaRepository.findById(id);
+        Optional<Osoba> optional = osobaRepository.findById(id);
         Osoba osoba = null;
         if (optional.isPresent()) {
             osoba = optional.get();
@@ -42,7 +42,7 @@ public class OsobaServiceImpl implements  OsobaService{
     @Override
     @Transactional
     public void deleteOsobaById(Long id) {
-        this.osobaRepository.deleteById(id);
+        osobaRepository.deleteById(id);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class OsobaServiceImpl implements  OsobaService{
                                           String oib,
                                           String ime,
                                           String prezime,
-                                          String grad,
                                           String broj,
+                                          String grad,
                                           String sortField,
                                           String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
-        return this.osobaRepository.findPaginatedByParams(oib, ime, prezime, grad, broj, pageable);
+        return osobaRepository.findPaginatedByParams(oib, ime, prezime, broj, grad, pageable);
     }
 
 }

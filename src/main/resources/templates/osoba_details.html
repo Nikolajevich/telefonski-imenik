@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Telefonski imenik</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous">
+
+    <style>
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container my-2">
+    <h2>Telefonski imenik</h2>
+
+    <hr>
+
+    <div style="margin-bottom: 20px">
+        <h5>Detalji osobe:</h5>
+    </div>
+
+    <div>
+        <p><strong>Ime:</strong> <span th:text="${osoba.ime}">John Doe</span></p>
+        <p><strong>Prezime:</strong> <span th:text="${osoba.prezime}">john.doe@example.com</span></p>
+        <p><strong>Telefonski broj:</strong> <span th:text="${osoba.broj}">John Doe</span></p>
+        <p><strong>OIB:</strong> <span th:text="${osoba.oib}">John Doe</span></p>
+        <a th:href="@{/updateOsobaForm/{id}(id=${osoba.id})}" class="btn btn-primary btn-sm">Ažuriraj</a>
+        <a th:href="@{/deleteOsoba/{id}(id=${osoba.id})}" class="btn btn-danger btn-sm">Izbriši</a>
+        <a th:href="@{/addAdresa/{id}(id=${osoba.id})}" class="btn btn-success btn-sm">Dodaj adresu</a>
+    </div>
+
+    <div style="margin-bottom: 20px">
+        <h5>Adrese:</h5>
+    </div>
+
+    <table class="table table-sm table-hover">
+        <thead class="bg-primary text-white">
+        <tr>
+            <th>
+                <a th:href="@{'/osobaDetails/sort' + ${currentPage} + '?sortField=ulica&sortDir=' + ${reverseSortDir}}"
+                   class="text-white">Ulica</a></th>
+            <th>
+                <a th:href="@{'/osobaDetails/sort' + ${currentPage} + '?sortField=ulicniBroj&sortDir=' + ${reverseSortDir}}"
+                   class="text-white">Broj</a></th>
+            <th>
+                <a th:href="@{'/osobaDetails/sort' + ${currentPage} + '?sortField=grad&sortDir=' + ${reverseSortDir}}"
+                   class="text-white">Grad</a></th>
+            <th>Opcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="adresa : ${listAdrese}">
+            <td th:text="${adresa.ulica}"></td>
+            <td th:text="${adresa.ulicniBroj}"></td>
+            <td th:text="${adresa.grad}"></td>
+            <td><a th:href="@{/updateAdresaForm/{id}(id=${adresa.id})}" class="btn btn-primary btn-sm">Ažuriraj</a>
+                <a th:href="@{/deleteAdresa/{id}(id=${adresa.id})}" class="btn btn-danger btn-sm">Izbriši</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${totalPages > 1}">
+        <div class="pagination">
+            <div class="col-sm-2">
+                Ukupno adresa: [[${totalItems}]]
+            </div>
+
+            <div class="pagination">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                    <a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]</a>
+                    <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+                </span>
+            </div>
+
+            <div class="col-sm-1">
+                <a th:if="${currentPage > 1}" th:href="@{'/page/' + ${currentPage - 1}}">Nazad</a>
+                <span th:unless="${currentPage > 1}">Nazad</span>
+            </div>
+
+            <div class="col-sm-1">
+                <a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}}">Dalje</a>
+                <span th:unless="${currentPage < totalPages}">Dalje</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

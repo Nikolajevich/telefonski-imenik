@@ -35,8 +35,8 @@ public class OsobaController {
                 osobaPretraga.getOib(),
                 osobaPretraga.getIme(),
                 osobaPretraga.getPrezime(),
-                osobaPretraga.getGrad(),
                 osobaPretraga.getBroj(),
+                osobaPretraga.getGrad(),
                 osobaPretraga.getSortField(),
                 osobaPretraga.getSortDir());
 
@@ -82,38 +82,38 @@ public class OsobaController {
     @GetMapping("/novaOsobaForm")
     public String novaOsobaForm(Model model) {
         model.addAttribute("osoba", new Osoba());
-        return "osoba_podaci";
+        return "osoba_form";
     }
 
     @PostMapping("/novaOsobaForm")
     public String saveOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "osoba_podaci";
+            return "osoba_form";
         }
 
         osobaService.saveOsoba(osoba);
         model.addAttribute("saveSuccess", true);
         model.addAttribute("osoba", new Osoba());
-        return "osoba_podaci";
+        return "osoba_form";
     }
 
     @PostMapping("/updateOsobaForm/{id}")
     public String updateOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "osoba_podaci";
+            return "osoba_form";
         }
 
         osobaService.saveOsoba(osoba);
         model.addAttribute("updateSuccess", true);
-        return "osoba_podaci";
+        return "osoba_form";
     }
 
     @GetMapping("/updateOsobaForm/{id}")
     public String updateOsobaForm(@PathVariable(value = "id") Long id, Model model) {
         Osoba osoba = osobaService.getOsobaById(id);
         model.addAttribute("osoba", osoba);
-        return "osoba_podaci";
+        return "osoba_form";
     }
 
     @GetMapping("/deleteOsoba/{id}")
@@ -121,6 +121,13 @@ public class OsobaController {
                               @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga) {
         osobaService.deleteOsobaById(id);
         return "redirect:" + osobaPretraga.getPath();
+    }
+
+    @GetMapping("/osobaDetails/{id}")
+    public String osobaDetails(@PathVariable(value = "id") Long id, Model model) {
+        Osoba osoba = osobaService.getOsobaById(id);
+        model.addAttribute("osoba", osoba);
+        return "osoba_details";
     }
 
 }

@@ -7,20 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface OsobaRepository extends JpaRepository<Osoba, Long> {
 
-    @Query(value = "SELECT o FROM Osoba o WHERE (:oib IS NULL OR :oib = '' OR o.oib = :oib)" +
+    @Query(value = "SELECT o FROM Osoba o JOIN o.adresaSet a WHERE (:oib IS NULL OR :oib = '' OR o.oib = :oib)" +
             "                       AND (:ime IS NULL OR :ime = '' OR o.ime = :ime)" +
             "                       AND (:prezime IS NULL OR :prezime = '' OR o.prezime = :prezime)" +
-            "                       AND (:grad IS NULL OR :grad = '' OR o.grad = :grad)" +
-            "                       AND (:broj IS NULL OR :broj = '' OR o.broj = :broj)")
+            "                       AND (:broj IS NULL OR :broj = '' OR o.broj = :broj)" +
+            "                       AND (:grad IS NULL OR :grad = '' OR a.grad = :grad)")
     Page<Osoba> findPaginatedByParams(@Param("oib") String oib,
-                             @Param("ime") String ime,
-                             @Param("prezime") String prezime,
-                             @Param("grad") String grad,
-                             @Param("broj") String broj,
-                             Pageable pageable);
+                                      @Param("ime") String ime,
+                                      @Param("prezime") String prezime,
+                                      @Param("broj") String broj,
+                                      @Param("grad") String grad,
+                                      Pageable pageable);
 
 }
