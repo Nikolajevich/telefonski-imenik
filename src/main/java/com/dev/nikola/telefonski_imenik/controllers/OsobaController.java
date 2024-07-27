@@ -93,56 +93,57 @@ public class OsobaController {
         osobaAdresaForm.addAdresa(newAdresa);
         osobaAdresaForm.setOsoba(newOsoba);
         model.addAttribute("osobaAdresaForm", osobaAdresaForm);
-        return "osoba_form";
+        return "new_osoba_form";
     }
 
     @PostMapping("/novaOsobaForm")
-    public String saveOsoba(@ModelAttribute("osobaAdresaForm") OsobaAdresaForm osobaAdresaForm, BindingResult result, Model model) {
+    public String saveOsoba(@Valid OsobaAdresaForm osobaAdresaForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "osoba_form";
+            return "new_osoba_form";
         }
         Osoba osoba = osobaAdresaForm.getOsoba();
         osoba.setAdresaSet(new HashSet<>(osobaAdresaForm.getAdresaList()));
         osobaService.saveOsoba(osoba);
+        model.addAttribute("saveSuccess", true);
         Osoba newOsoba = new Osoba();
         Adresa newAdresa = new Adresa();
         osobaAdresaForm = new OsobaAdresaForm();
         osobaAdresaForm.addAdresa(newAdresa);
         osobaAdresaForm.setOsoba(newOsoba);
         model.addAttribute("osobaAdresaForm", osobaAdresaForm);
-        return "osoba_form";
+        return "new_osoba_form";
     }
 
     @PostMapping("/updateOsobaForm/{id}")
     public String updateOsoba(@Valid Osoba osoba, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "osoba_form";
+            return "update_osoba_form";
         }
 
         osobaService.saveOsoba(osoba);
         model.addAttribute("updateSuccess", true);
-        return "osoba_form";
+        return "update_osoba_form";
     }
 
     @GetMapping("/updateOsobaForm/{id}")
     public String updateOsobaForm(@PathVariable(value = "id") Long id, Model model) {
         Osoba osoba = osobaService.getOsobaById(id);
         model.addAttribute("osoba", osoba);
-        return "osoba_form";
+        return "update_osoba_form";
     }
 
     @GetMapping("/deleteOsoba/{id}")
     public String deleteOsoba(@PathVariable(value = "id") Long id,
-                              @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga) {
+                              @SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga) {
         osobaService.deleteOsobaById(id);
         return "redirect:" + osobaPretraga.getPath();
     }
 
     @GetMapping("/osobaDetails/{id}")
-    public String osobaDetails(@PathVariable(value = "id") Long id, Model model) {
-        Osoba osoba = osobaService.getOsobaById(id);
-        model.addAttribute("osoba", osoba);
-        return "osoba_details";
+    public String osobaDetails(@SessionAttribute OsobaPretraga osobaPretraga, @PathVariable(value = "id") Long id, Model model) {
+        osobaPretraga.setId(id);
+        model.addAttribute("osobaPretraga", osobaPretraga);
+        return "redirect:/osobaDetails";
     }
 
 }

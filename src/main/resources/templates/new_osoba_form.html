@@ -22,10 +22,6 @@
         Uspješno ste spremili osobu
     </div>
 
-    <div class="alert alert-success" role="alert" th:if="${updateSuccess}">
-        Uspješno ste ažurirali osobu
-    </div>
-
     <h2>Telefonski imenik</h2>
 
     <hr>
@@ -40,12 +36,25 @@
             <input th:field="*{osoba.id}" type="hidden">
 
             <input class="form-control mb-4 col-4" placeholder="Prezime" th:field="*{osoba.prezime}" type="text">
+            <p th:if="${#fields.hasErrors('osoba.prezime')}"
+               th:class="${#fields.hasErrors('osoba.prezime')}? error"
+               th:errors="*{osoba.prezime}"></p>
 
             <input class="form-control mb-4 col-4" placeholder="Ime" th:field="*{osoba.ime}" type="text">
+            <p th:if="${#fields.hasErrors('osoba.ime')}"
+               th:class="${#fields.hasErrors('osoba.ime')}? error"
+               th:errors="*{osoba.ime}"></p>
 
             <input class="form-control mb-4 col-4" placeholder="Telefonski broj" th:field="*{osoba.broj}" type="text">
+            <p th:if="${#fields.hasErrors('osoba.broj')}"
+               th:class="${#fields.hasErrors('osoba.broj')}? error"
+               th:errors="*{osoba.broj}"></p>
 
             <input class="form-control mb-4 col-4" placeholder="OIB" th:field="*{osoba.oib}" type="text">
+            <ul>
+                <li th:each="err : ${#fields.errors('osoba.oib')}" th:text="${err}"
+                    class="error"></li>
+            </ul>
         </div>
 
         <br/>
@@ -57,13 +66,21 @@
         <div>
             <input th:field="*{adresaList[0].id}" type="hidden">
 
-            <input class="form-control mb-4 col-4" placeholder="Grad" th:field="*{adresaList[0].grad}"
-                   type="text">
-            <input class="form-control mb-4 col-4" placeholder="Ulica" th:field="*{adresaList[0].ulica}"
-                   type="text">
+            <input class="form-control mb-4 col-4" placeholder="Grad" th:field="*{adresaList[0].grad}" type="text">
+            <p th:if="${#fields.hasErrors('adresaList[0].grad')}"
+               th:class="${#fields.hasErrors('adresaList[0].grad')}? error"
+               th:errors="*{adresaList[0].grad}"></p>
+
+            <input class="form-control mb-4 col-4" placeholder="Ulica" th:field="*{adresaList[0].ulica}" type="text">
+            <p th:if="${#fields.hasErrors('adresaList[0].ulica')}"
+               th:class="${#fields.hasErrors('adresaList[0].ulica')}? error"
+               th:errors="*{adresaList[0].ulica}"></p>
+
             <input class="form-control mb-4 col-4" placeholder="Broj" th:field="*{adresaList[0].ulicniBroj}"
                    type="text">
-            <br/>
+            <p th:if="${#fields.hasErrors('adresaList[0].ulicniBroj')}"
+               th:class="${#fields.hasErrors('adresaList[0].ulicniBroj')}? error"
+               th:errors="*{adresaList[0].ulicniBroj}"></p>
         </div>
 
         <button class="btn btn-info col-2" type="submit"> Spremi</button>

@@ -2,13 +2,17 @@ package com.dev.nikola.telefonski_imenik.wrapper;
 
 import com.dev.nikola.telefonski_imenik.models.Adresa;
 import com.dev.nikola.telefonski_imenik.models.Osoba;
+import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OsobaAdresaForm {
 
+    @Valid
     private Osoba osoba;
+    
+    @Valid
     private List<Adresa> adresaList = new ArrayList<>();
 
     public Osoba getOsoba() {
