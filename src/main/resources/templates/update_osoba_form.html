@@ -18,10 +18,6 @@
 </head>
 <body>
 <div class="container my-2">
-    <div th:if="${saveSuccess}" class="alert alert-success" role="alert">
-        Uspješno ste spremili osobu
-    </div>
-
     <div th:if="${updateSuccess}" class="alert alert-success" role="alert">
         Uspješno ste ažurirali osobu
     </div>
@@ -35,7 +31,7 @@
     </div>
 
     <form th:object="${osoba}" method="POST">
-        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{id}"/>
 
         <input type="text" th:field="*{prezime}" placeholder="Prezime" class="form-control mb-4 col-4">
         <p th:if="${#fields.hasErrors('prezime')}"
@@ -46,16 +42,6 @@
         <p th:if="${#fields.hasErrors('ime')}"
            th:class="${#fields.hasErrors('ime')}? error"
            th:errors="*{ime}"></p>
-
-        <input type="text" th:field="*{adresa}" placeholder="Adresa" class="form-control mb-4 col-4">
-        <p th:if="${#fields.hasErrors('adresa')}"
-           th:class="${#fields.hasErrors('adresa')}? error"
-           th:errors="*{adresa}"></p>
-
-        <input type="text" th:field="*{grad}" placeholder="Grad" class="form-control mb-4 col-4">
-        <p th:if="${#fields.hasErrors('grad')}"
-           th:class="${#fields.hasErrors('grad')}? error"
-           th:errors="*{grad}"></p>
 
         <input type="text" th:field="*{broj}" placeholder="Telefonski broj" class="form-control mb-4 col-4">
         <p th:if="${#fields.hasErrors('broj')}"
@@ -73,7 +59,7 @@
 
     <hr>
 
-    <a class="btn btn-primary mb-3" th:href="@{${osobaPretraga.path}}"> Nazad na početnu stranicu</a>
+    <a class="btn btn-primary mb-3" th:href="@{/osobaDetails/{id}(id=${osobaPretraga.id})}"> Nazad</a>
 </div>
 </body>
 </html>

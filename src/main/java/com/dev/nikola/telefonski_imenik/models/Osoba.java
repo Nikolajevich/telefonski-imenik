@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "osobe")
 public class Osoba {
@@ -12,30 +15,22 @@ public class Osoba {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "OIB")
     @NotEmpty(message = "Polje ne smije biti prazno")
     @Pattern(regexp = "\\d{11}", message = "OIB mora sadržavati 11 znamenki")
     private String oib;
 
-    @Column(name = "ime")
     @NotEmpty(message = "Polje ne smije biti prazno")
     private String ime;
 
-    @Column(name = "prezime")
     @NotEmpty(message = "Polje ne smije biti prazno")
     private String prezime;
-
-    @Column(name = "adresa")
-    @NotEmpty(message = "Polje ne smije biti prazno")
-    private String adresa;
-
-    @Column(name = "grad")
-    @NotEmpty(message = "Polje ne smije biti prazno")
-    private String grad;
 
     @Column(name = "telefonski_broj")
     @NotEmpty(message = "Polje ne smije biti prazno")
     private String broj;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "osoba", orphanRemoval = true)
+    private Set<Adresa> adresaSet = new HashSet<>();
 
     public String getOib() {
         return oib;
@@ -69,27 +64,33 @@ public class Osoba {
         this.prezime = prezime;
     }
 
-    public String getAdresa() {
-        return adresa;
-    }
-
-    public void setAdresa(String adresa) {
-        this.adresa = adresa;
-    }
-
-    public String getGrad() {
-        return grad;
-    }
-
-    public void setGrad(String grad) {
-        this.grad = grad;
-    }
-
     public String getBroj() {
         return broj;
     }
 
     public void setBroj(String broj) {
         this.broj = broj;
+    }
+
+    public Set<Adresa> getAdresaSet() {
+        return adresaSet;
+    }
+
+    public void addAdresa(Adresa adresa) {
+        adresa.setOsoba(this);
+        adresaSet.add(adresa);
+    }
+
+    public void deleteAdresa(Adresa adresa) {
+        adresaSet.remove(adresa);
+    }
+
+    public void setAdresaSet(Set<Adresa> adresaSet) {
+        if (!adresaSet.isEmpty()) {
+            for (Adresa adresa : adresaSet) {
+                adresa.setOsoba(this);
+            }
+        }
+        this.adresaSet = adresaSet;
     }
 }
