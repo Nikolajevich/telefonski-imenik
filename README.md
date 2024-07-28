@@ -2,8 +2,6 @@
 
 ------------------------------------------
 
-#### Repozitorij sadrži Spring web aplikaciju koja koristi lokalnu MySQL bazu podataka za pohranu podataka. 
+#### Repozitorij sadrži Spring web aplikaciju koja koristi H2 bazu podataka za pohranu podataka. 
 
-#### Aplikacija ima mogućnost unosa, brisanja, uređivanja, pretraživanja i sortiranja osoba.
-
-#### Napomena: aplikacija mora imati pristup lokalnoj MySQL bazi podataka da bi funkcionirala.
+#### Aplikacija ima mogućnost unosa, brisanja, uređivanja, pretraživanja i sortiranja osoba i adresa (bez pretraživanja adresa).
