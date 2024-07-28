@@ -26,6 +26,10 @@
     <hr>
 
     <form th:object="${osobaPretraga}" method="POST">
+        <input type="hidden" th:field="*{path}">
+        <input type="hidden" th:field="*{sortField}">
+        <input type="hidden" th:field="*{sortDir}">
+
         <input type="text" th:field="*{prezime}" placeholder="Pretraživanje po prezimenu"
                class="form-control form-control-sm mb-4 col-4">
         <input type="text" th:field="*{ime}" placeholder="Pretraživanje po imenu"
