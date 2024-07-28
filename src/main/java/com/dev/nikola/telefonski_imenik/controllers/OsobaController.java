@@ -39,7 +39,6 @@ public class OsobaController {
                 osobaPretraga.getIme(),
                 osobaPretraga.getPrezime(),
                 osobaPretraga.getBroj(),
-                osobaPretraga.getGrad(),
                 osobaPretraga.getSortField(),
                 osobaPretraga.getSortDir());
 

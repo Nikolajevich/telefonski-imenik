@@ -14,7 +14,6 @@ public interface OsobaService {
                                    String ime,
                                    String prezime,
                                    String broj,
-                                   String grad,
                                    String sortField,
                                    String sortDirection);
 

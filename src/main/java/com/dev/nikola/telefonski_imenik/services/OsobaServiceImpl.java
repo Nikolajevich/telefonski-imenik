@@ -53,12 +53,11 @@ public class OsobaServiceImpl implements  OsobaService{
                                           String ime,
                                           String prezime,
                                           String broj,
-                                          String grad,
                                           String sortField,
                                           String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
         Pageable pageable = PageRequest.of(pageNum - 1, pageSize, sort);
-        return osobaRepository.findPaginatedByParams(oib, ime, prezime, broj, grad, pageable);
+        return osobaRepository.findPaginatedByParams(oib, ime, prezime, broj, pageable);
     }
 
 }

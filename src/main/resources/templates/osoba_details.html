@@ -30,10 +30,10 @@
     </div>
 
     <div>
-        <p><strong>Ime:</strong> <span th:text="${osoba.ime}">John Doe</span></p>
-        <p><strong>Prezime:</strong> <span th:text="${osoba.prezime}">john.doe@example.com</span></p>
-        <p><strong>Telefonski broj:</strong> <span th:text="${osoba.broj}">John Doe</span></p>
-        <p><strong>OIB:</strong> <span th:text="${osoba.oib}">John Doe</span></p>
+        <p><strong>Ime:</strong> <span th:text="${osoba.ime}"></span></p>
+        <p><strong>Prezime:</strong> <span th:text="${osoba.prezime}"></span></p>
+        <p><strong>Telefonski broj:</strong> <span th:text="${osoba.broj}"></span></p>
+        <p><strong>OIB:</strong> <span th:text="${osoba.oib}"></span></p>
         <a th:href="@{/updateOsobaForm/{id}(id=${osoba.id})}" class="btn btn-primary btn-sm">Ažuriraj</a>
         <a th:href="@{/deleteOsoba/{id}(id=${osoba.id})}" class="btn btn-danger btn-sm">Izbriši</a>
         <a th:href="@{/addAdresa/{id}(id=${osoba.id})}" class="btn btn-success btn-sm">Dodaj adresu</a>
@@ -44,7 +44,7 @@
     <a class="btn btn-primary mb-3" th:href="@{${osobaPretraga.path}}"> Nazad na početnu stranicu</a>
 
     <div style="margin-bottom: 20px">
-        <h5>Adrese:</h5>
+        <p><strong>Adrese:</strong></p>
     </div>
 
     <table class="table table-sm table-hover">

@@ -84,8 +84,8 @@ public class AdresaController {
 
     @PostMapping("/addAdresa/{id}")
     public String addAdresa(@SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
-                            @Valid @ModelAttribute("adresa") Adresa adresa,
                             @PathVariable(value = "id") Long osobaId,
+                            @Valid @ModelAttribute("adresa") Adresa adresa,
                             BindingResult result,
                             Model model) {
         if (result.hasErrors()) {
