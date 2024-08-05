@@ -34,9 +34,9 @@
         <p><strong>Prezime:</strong> <span th:text="${osoba.prezime}"></span></p>
         <p><strong>Telefonski broj:</strong> <span th:text="${osoba.broj}"></span></p>
         <p><strong>OIB:</strong> <span th:text="${osoba.oib}"></span></p>
-        <a th:href="@{/updateOsobaForm/{id}(id=${osoba.id})}" class="btn btn-primary btn-sm">Ažuriraj</a>
-        <a th:href="@{/deleteOsoba/{id}(id=${osoba.id})}" class="btn btn-danger btn-sm">Izbriši</a>
-        <a th:href="@{/addAdresa/{id}(id=${osoba.id})}" class="btn btn-success btn-sm">Dodaj adresu</a>
+        <a th:href="@{/updateOsobaForm}" class="btn btn-primary btn-sm">Ažuriraj</a>
+        <a th:href="@{/deleteOsoba}" class="btn btn-danger btn-sm">Izbriši</a>
+        <a th:href="@{/addAdresa}" class="btn btn-success btn-sm">Dodaj adresu</a>
     </div>
 
     <br>

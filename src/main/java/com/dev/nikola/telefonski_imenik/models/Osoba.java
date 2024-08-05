@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "osobe")
@@ -30,7 +30,7 @@ public class Osoba {
     private String broj;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "osoba", orphanRemoval = true)
-    private Set<Adresa> adresaSet = new HashSet<>();
+    private List<Adresa> adresaList = new ArrayList<>();
 
     public String getOib() {
         return oib;
@@ -72,25 +72,25 @@ public class Osoba {
         this.broj = broj;
     }
 
-    public Set<Adresa> getAdresaSet() {
-        return adresaSet;
+    public List<Adresa> getAdresaList() {
+        return adresaList;
     }
 
     public void addAdresa(Adresa adresa) {
         adresa.setOsoba(this);
-        adresaSet.add(adresa);
+        adresaList.add(adresa);
     }
 
     public void deleteAdresa(Adresa adresa) {
-        adresaSet.remove(adresa);
+        adresaList.remove(adresa);
     }
 
-    public void setAdresaSet(Set<Adresa> adresaSet) {
-        if (!adresaSet.isEmpty()) {
-            for (Adresa adresa : adresaSet) {
+    public void setAdresaList(List<Adresa> adresaList) {
+        if (!adresaList.isEmpty()) {
+            for (Adresa adresa : adresaList) {
                 adresa.setOsoba(this);
             }
         }
-        this.adresaSet = adresaSet;
+        this.adresaList = adresaList;
     }
 }

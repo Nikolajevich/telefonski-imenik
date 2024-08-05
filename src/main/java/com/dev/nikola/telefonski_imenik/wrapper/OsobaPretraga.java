@@ -12,8 +12,6 @@ public class OsobaPretraga {
 
     private String broj;
 
-    private String grad;
-
     private String sortField;
 
     private String sortDir;
@@ -74,14 +72,6 @@ public class OsobaPretraga {
 
     public void setBroj(String broj) {
         this.broj = broj;
-    }
-
-    public String getGrad() {
-        return grad;
-    }
-
-    public void setGrad(String grad) {
-        this.grad = grad;
     }
 
     public String getSortDir() {

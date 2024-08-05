@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -75,43 +74,41 @@ public class OsobaController {
 
     @GetMapping("/page/{pageNum}")
     public String paginateHomePage(@PathVariable(value = "pageNum") int pageNum,
-                                         @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
-                                         Model model) {
+                                   @ModelAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
+                                   Model model) {
         osobaPretraga.setPath("/page/" + pageNum);
         return homePage(osobaPretraga, pageNum, model);
     }
 
     @GetMapping("/novaOsobaForm")
     public String novaOsobaForm(Model model) {
-        Osoba newOsoba = new Osoba();
-        Adresa newAdresa = new Adresa();
         OsobaAdresaForm osobaAdresaForm = new OsobaAdresaForm();
-        osobaAdresaForm.addAdresa(newAdresa);
-        osobaAdresaForm.setOsoba(newOsoba);
+        osobaAdresaForm.addAdresa(new Adresa());
+        osobaAdresaForm.setOsoba(new Osoba());
         model.addAttribute("osobaAdresaForm", osobaAdresaForm);
         return "new_osoba_form";
     }
 
     @PostMapping("/novaOsobaForm")
-    public String saveOsoba(@Valid OsobaAdresaForm osobaAdresaForm, BindingResult result, Model model) {
+    public String saveOsoba(@Valid @ModelAttribute("osobaAdresaForm") OsobaAdresaForm osobaAdresaForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "new_osoba_form";
         }
         Osoba osoba = osobaAdresaForm.getOsoba();
-        osoba.setAdresaSet(new HashSet<>(osobaAdresaForm.getAdresaList()));
+        osoba.setAdresaList(osobaAdresaForm.getAdresaList());
         osobaService.saveOsoba(osoba);
         model.addAttribute("saveSuccess", true);
-        Osoba newOsoba = new Osoba();
-        Adresa newAdresa = new Adresa();
         osobaAdresaForm = new OsobaAdresaForm();
-        osobaAdresaForm.addAdresa(newAdresa);
-        osobaAdresaForm.setOsoba(newOsoba);
+        osobaAdresaForm.addAdresa(new Adresa());
+        osobaAdresaForm.setOsoba(new Osoba());
         model.addAttribute("osobaAdresaForm", osobaAdresaForm);
         return "new_osoba_form";
     }
 
-    @PostMapping("/updateOsobaForm/{id}")
-    public String updateOsoba(@Valid Osoba formOsoba, BindingResult result, Model model) {
+    @PostMapping("/updateOsobaForm")
+    public String updateOsoba(@Valid @ModelAttribute("osoba") Osoba formOsoba,
+                              BindingResult result,
+                              Model model) {
         if (result.hasErrors()) {
             return "update_osoba_form";
         }
@@ -126,16 +123,15 @@ public class OsobaController {
         return "update_osoba_form";
     }
 
-    @GetMapping("/updateOsobaForm/{id}")
-    public String updateOsobaForm(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("osoba", osobaService.getOsobaById(id));
+    @GetMapping("/updateOsobaForm")
+    public String updateOsobaForm(@SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
+        model.addAttribute("osoba", osobaService.getOsobaById(osobaPretraga.getId()));
         return "update_osoba_form";
     }
 
-    @GetMapping("/deleteOsoba/{id}")
-    public String deleteOsoba(@PathVariable(value = "id") Long id,
-                              @SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga) {
-        osobaService.deleteOsobaById(id);
+    @GetMapping("/deleteOsoba")
+    public String deleteOsoba(@SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga) {
+        osobaService.deleteOsobaById(osobaPretraga.getId());
         return "redirect:" + osobaPretraga.getPath();
     }
 

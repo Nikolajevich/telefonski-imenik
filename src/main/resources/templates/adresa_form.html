@@ -35,7 +35,7 @@
     </div>
 
     <form th:object="${adresa}" method="POST">
-        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{id}">
 
         <input type="text" th:field="*{grad}" placeholder="Grad" class="form-control mb-4 col-4">
         <p th:if="${#fields.hasErrors('grad')}"

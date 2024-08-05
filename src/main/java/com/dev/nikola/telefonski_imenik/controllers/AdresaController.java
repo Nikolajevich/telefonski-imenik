@@ -75,16 +75,15 @@ public class AdresaController {
         return osobaDetails(osobaPretraga, pageNum, model);
     }
 
-    @GetMapping("/addAdresa/{id}")
+    @GetMapping("/addAdresa")
     public String addAdresaForm(@SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga, Model model) {
         model.addAttribute("adresa", new Adresa());
         model.addAttribute("osobaPretraga", osobaPretraga);
         return "adresa_form";
     }
 
-    @PostMapping("/addAdresa/{id}")
+    @PostMapping("/addAdresa")
     public String addAdresa(@SessionAttribute("osobaPretraga") OsobaPretraga osobaPretraga,
-                            @PathVariable(value = "id") Long osobaId,
                             @Valid @ModelAttribute("adresa") Adresa adresa,
                             BindingResult result,
                             Model model) {
@@ -93,7 +92,7 @@ public class AdresaController {
             return "adresa_form";
         }
 
-        Osoba osoba = osobaService.getOsobaById(osobaId);
+        Osoba osoba = osobaService.getOsobaById(osobaPretraga.getId());
         osoba.addAdresa(adresa);
         adresaService.saveAdresa(adresa);
         model.addAttribute("saveSuccess", true);
